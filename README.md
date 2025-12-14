@@ -1,26 +1,12 @@
-
-Iniciar o cluster RabbitMQ:
-docker compose up -d
-
-Acessar o console informando usu·rio e senha 'admin':
-http://localhost:15672
-
-docker exec -it alurafood-pagamento mysql -u root -p alurafood-pagamento
-
-Realizar um pagamento:
-```
-curl -H "Content-Type: application/json" -H "Accept: application/json" -X POST http://localhost:8080/pagamentos  -d '{"valor":1300.0,"nome":"Jacqueline","numero":"123456","expiracao":"10/2028","codigo":875,"status":"CONFIRMADO","formaDePagamentoId":1,"pedidoId":156}'
-```
-
 # Sobre o Projeto
-Este projeto È uma aplicaÁ„o de delivery de comida utilizando RabbitMQ para mensageria e MySQL como banco de dados.
+Este projeto √© uma aplica√ß√£o de delivery de comida utilizando RabbitMQ para mensageria e MySQL como banco de dados.
 
-A aplicaÁ„o È composta por trÍs serviÁos principais:
+A aplica√ß√£o √© composta por tr√™s servi√ßos principais:
 * Um produtor RabbitMQ para registro do pagamento da compra.
-* Dois consumidores: um que confirma o pedido apÛs o pagamento e outro que solicita para o cliente a avaliaÁ„o do pedido.
+* Dois consumidores: um que confirma o pedido ap√≥s o pagamento e outro que solicita para o cliente a avalia√ß√£o do pedido.
 * Um banco de dados MySQL para armazenar os dados dos pagamentos.
 
-## Como iniciar a aplicaÁ„o:
+## Como iniciar a aplica√ß√£o:
 
 ### Passo 1: Baixar o projeto
 ```
@@ -32,8 +18,8 @@ cd alura-foods-rabbitmq-mysql
 docker compose up -d
 ```
 
-### Passo 3: Configurar a replicaÁ„o entre os nÛs do RabbitMQ
-Acessar o console http://localhost:15672, ir em Admin -> Policies -> Add / update a policy e adicionar a seguinte polÌtica:
+### Passo 3: Configurar a replica√ß√£o entre os n√≥s do RabbitMQ
+Acessar o console http://localhost:15672, ir em Admin -> Policies -> Add / update a policy e adicionar a seguinte pol√≠tica:
 ```
 Name: ha-all
 Pattern: .*
@@ -41,19 +27,19 @@ Definition: ha-mode = all
 Apply to: Exchanges and Queues
 ```
 
-### Passo 4: Iniciar o microserviÁo de pagamentos
+### Passo 4: Iniciar o microservi√ßo de pagamentos
 ```
 cd pagamentos
 mvn spring-boot:run
 ```
 
-### Passo 5: Iniciar o microserviÁo de pedidos
+### Passo 5: Iniciar o microservi√ßo de pedidos
 ```
 cd pedidos
 mvn spring-boot:run
 ```
 
-### Passo 6: Iniciar o microserviÁo de avaliaÁ„o
+### Passo 6: Iniciar o microservi√ßo de avalia√ß√£o
 ```
 cd avaliacao
 mvn spring-boot:run
@@ -67,12 +53,4 @@ curl -H "Content-Type: application/json" -H "Accept: application/json" -X POST h
 ```
 docker exec -it alurafood-pagamento mysql -u root -p alurafood-pagamento
 select * from pagamentos;
-```
-
-# Comandos Kafka:
-```
-docker exec --workdir /opt/kafka/bin/ -it kafka sh
-./kafka-consumer-groups.sh --all-groups --bootstrap-server localhost:9092 --describe
-./kafka-topics.sh --describe --bootstrap-server localhost:9092
-./kafka-topics.sh --list --bootstrap-server localhost:9092
 ```
