@@ -14,7 +14,7 @@ git clone https://github.com/franklindeoliveira/alura-foods-rabbitmq-mysql.git
 ```
 ### Passo 2: Iniciar o cluster RabbitMQ e MySQL
 ```
-cd alura-foods-rabbitmq-mysql
+cd alura-foods-rabbitmq
 docker compose up -d
 ```
 
