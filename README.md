@@ -48,31 +48,31 @@ CREATE TABLE pagamentos (
 PRIMARY KEY (id)
 );
 ```
-### Passo 4: Iniciar o microserviço de pagamentos
+### Passo 5: Iniciar o microserviço de pagamentos
 ```
 cd pagamentos
 mvn spring-boot:run
 ```
 
-### Passo 5: Iniciar o microserviço de pedidos
+### Passo 6: Iniciar o microserviço de pedidos
 ```
 cd pedidos
 mvn spring-boot:run
 ```
 
-### Passo 6: Iniciar o microserviço de avaliação
+### Passo 7: Iniciar o microserviço de avaliação
 ```
 cd avaliacao
 mvn spring-boot:run
 ```
 
-### Passo 7: Realizar um pagamento
+### Passo 8: Realizar um pagamento
 ```
 curl -H "Content-Type: application/json" -H "Accept: application/json" -X POST http://localhost:8080/pagamentos  -d '{"valor":1300.0,"nome":"Carla","numero":"123456","expiracao":"10/2028","codigo":875,"status":"CONFIRMADO","formaDePagamentoId":1,"pedidoId":156}'
 ```
-### Passo 8: Verificar no console dos serviços de pedido e avaliação se foram notificados do pagamento aprovado
+### Passo 9: Verificar no console dos serviços de pedido e avaliação se foram notificados do pagamento aprovado
 
-### Passo 9: Verificar os dados do pagamento no MySQL (informar essa senha: root)
+### Passo 10: Verificar os dados do pagamento no MySQL (informar essa senha: root)
 ```
 docker exec -it alurafood-pagamento mysql -u root -p alurafood-pagamento
 select * from pagamentos;
