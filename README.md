@@ -1,0 +1,78 @@
+
+Iniciar o cluster RabbitMQ:
+docker compose up -d
+
+Acessar o console informando usuário e senha 'admin':
+http://localhost:15672
+
+docker exec -it alurafood-pagamento mysql -u root -p alurafood-pagamento
+
+Realizar um pagamento:
+```
+curl -H "Content-Type: application/json" -H "Accept: application/json" -X POST http://localhost:8080/pagamentos  -d '{"valor":1300.0,"nome":"Jacqueline","numero":"123456","expiracao":"10/2028","codigo":875,"status":"CONFIRMADO","formaDePagamentoId":1,"pedidoId":156}'
+```
+
+# Sobre o Projeto
+Este projeto é uma aplicação de delivery de comida utilizando RabbitMQ para mensageria e MySQL como banco de dados.
+
+A aplicação é composta por três serviços principais:
+* Um produtor RabbitMQ para registro do pagamento da compra.
+* Dois consumidores: um que confirma o pedido após o pagamento e outro que solicita para o cliente a avaliação do pedido.
+* Um banco de dados MySQL para armazenar os dados dos pagamentos.
+
+## Como iniciar a aplicação:
+
+### Passo 1: Baixar o projeto
+```
+git clone https://github.com/franklindeoliveira/alura-foods-rabbitmq-mysql.git
+```
+### Passo 2: Iniciar o cluster RabbitMQ e MySQL
+```
+cd alura-foods-rabbitmq-mysql
+docker compose up -d
+```
+
+### Passo 3: Configurar a replicação entre os nós do RabbitMQ
+Acessar o console http://localhost:15672, ir em Admin -> Policies -> Add / update a policy e adicionar a seguinte política:
+```
+Name: ha-all
+Pattern: .*
+Definition: ha-mode = all
+Apply to: Exchanges and Queues
+```
+
+### Passo 4: Iniciar o microserviço de pagamentos
+```
+cd pagamentos
+mvn spring-boot:run
+```
+
+### Passo 5: Iniciar o microserviço de pedidos
+```
+cd pedidos
+mvn spring-boot:run
+```
+
+### Passo 6: Iniciar o microserviço de avaliação
+```
+cd avaliacao
+mvn spring-boot:run
+```
+
+### Passo 7: Realizar um pagamento
+```
+curl -H "Content-Type: application/json" -H "Accept: application/json" -X POST http://localhost:8080/pagamentos  -d '{"valor":1300.0,"nome":"Carla","numero":"123456","expiracao":"10/2028","codigo":875,"status":"CONFIRMADO","formaDePagamentoId":1,"pedidoId":156}'
+```
+### Passo 8: Verificar os dados do pagamento no MySQL (informar essa senha: root)
+```
+docker exec -it alurafood-pagamento mysql -u root -p alurafood-pagamento
+select * from pagamentos;
+```
+
+# Comandos Kafka:
+```
+docker exec --workdir /opt/kafka/bin/ -it kafka sh
+./kafka-consumer-groups.sh --all-groups --bootstrap-server localhost:9092 --describe
+./kafka-topics.sh --describe --bootstrap-server localhost:9092
+./kafka-topics.sh --list --bootstrap-server localhost:9092
+```
