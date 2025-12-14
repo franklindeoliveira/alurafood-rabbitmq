@@ -10,11 +10,11 @@ A aplicação é composta por três serviços principais:
 
 ### Passo 1: Baixar o projeto
 ```
-git clone https://github.com/franklindeoliveira/alura-foods-rabbitmq.git
+git clone https://github.com/franklindeoliveira/alurafood-rabbitmq.git
 ```
 ### Passo 2: Iniciar o cluster RabbitMQ e MySQL
 ```
-cd alura-foods-rabbitmq
+cd alurafood-rabbitmq
 docker compose up -d
 ```
 
@@ -27,6 +27,27 @@ Definition: ha-mode = all
 Apply to: Exchanges and Queues
 ```
 
+### Passo 4: Configurar o MySQL
+Criar a tabela pagamentos (informar essa senha: root):
+
+```
+docker exec -it alurafood-pagamento mysql -u root -p alurafood-pagamento
+```
+
+```
+CREATE TABLE pagamentos (
+ id bigint(20) NOT NULL AUTO_INCREMENT,
+ valor decimal(19,2) NOT NULL,
+ nome varchar(100) DEFAULT NULL,
+ numero varchar(19) DEFAULT NULL,
+ expiracao varchar(7) DEFAULT NULL,
+ codigo varchar(3) DEFAULT NULL,
+ status varchar(255) NOT NULL,
+ forma_de_pagamento_id bigint(20) NOT NULL,
+ pedido_id bigint(20) NOT NULL,
+PRIMARY KEY (id)
+);
+```
 ### Passo 4: Iniciar o microserviço de pagamentos
 ```
 cd pagamentos
@@ -49,7 +70,9 @@ mvn spring-boot:run
 ```
 curl -H "Content-Type: application/json" -H "Accept: application/json" -X POST http://localhost:8080/pagamentos  -d '{"valor":1300.0,"nome":"Carla","numero":"123456","expiracao":"10/2028","codigo":875,"status":"CONFIRMADO","formaDePagamentoId":1,"pedidoId":156}'
 ```
-### Passo 8: Verificar os dados do pagamento no MySQL (informar essa senha: root)
+### Passo 8: Verificar no console dos serviços de pedido e avaliação se foram notificados do pagamento aprovado
+
+### Passo 9: Verificar os dados do pagamento no MySQL (informar essa senha: root)
 ```
 docker exec -it alurafood-pagamento mysql -u root -p alurafood-pagamento
 select * from pagamentos;
