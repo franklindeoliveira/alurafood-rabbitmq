@@ -10,7 +10,7 @@ A aplicação é composta por três serviços principais:
 
 ### Passo 1: Baixar o projeto
 ```
-git clone https://github.com/franklindeoliveira/alura-foods-rabbitmq-mysql.git
+git clone https://github.com/franklindeoliveira/alura-foods-rabbitmq.git
 ```
 ### Passo 2: Iniciar o cluster RabbitMQ e MySQL
 ```
